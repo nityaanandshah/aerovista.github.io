@@ -90,7 +90,7 @@ export function calculateDaylightInfo(
  * Calculate solar noon (time when sun reaches highest altitude)
  * Uses equation of time to correct for Earth's elliptical orbit and axial tilt
  */
-export function calculateSolarNoon(lat: number, lon: number, date: Date): Date {
+export function calculateSolarNoon(_lat: number, lon: number, date: Date): Date {
   const jd = getJulianDay(date);
   const T = getJulianCentury(jd);
   

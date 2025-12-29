@@ -59,11 +59,11 @@ export interface TimelinePoint {
   timestamp: Date;
   elapsedMinutes: number;
   
-  // Solar information (will be populated in Week 2)
-  sunAzimuth?: number;
-  sunAltitude?: number;
-  sunZenith?: number;
-  isDaylight?: boolean;
+  // Solar information
+  sunAzimuth: number;
+  sunAltitude: number;
+  sunZenith: number;
+  isDaylight: boolean;
   
   // Flight information
   heading: number;         // Aircraft bearing (0-360)
@@ -86,8 +86,8 @@ export interface FlightTimeline {
   destination: Airport;
   totalDistance: number;
   totalDuration: number;      // minutes
-  sunEvents?: SunEvent[];
-  statistics?: TimelineStatistics;
+  sunEvents: SunEvent[];
+  statistics: TimelineStatistics;
 }
 
 export interface TimelineStatistics {

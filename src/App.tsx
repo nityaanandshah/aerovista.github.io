@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FlightInput } from './components/FlightInput';
 import { Globe3D } from './components/Globe3D';
 import { TimelineScrubber } from './components/TimelineScrubber';
@@ -84,7 +84,7 @@ function App() {
                 <div className="flex items-center gap-2">
                   <div className="text-sm">
                     <span className="text-gray-300">
-                      {flightData.origin.iata} → {flightData.destination.iata}
+                      {flightData?.origin.iata} → {flightData?.destination.iata}
                     </span>
                   </div>
                   {/* Info Icon */}

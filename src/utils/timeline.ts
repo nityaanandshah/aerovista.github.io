@@ -2,68 +2,7 @@
  * Flight timeline generation with solar data integration
  */
 
-import { Airport } from '@/types';
-
-/**
- * Single point along the flight path with temporal and solar information
- */
-export interface TimelinePoint {
-  // Spatial position
-  lat: number;
-  lon: number;
-  distance: number;        // km from origin
-  
-  // Temporal position
-  timestamp: Date;
-  elapsedMinutes: number;
-  
-  // Solar information
-  sunAzimuth: number;      // 0-360°
-  sunAltitude: number;     // -90 to +90°
-  sunZenith: number;       // 0-180°
-  isDaylight: boolean;
-  
-  // Flight information
-  heading: number;         // Aircraft bearing (0-360)
-  speed: number;           // Ground speed km/h
-  altitude: number;        // Flight altitude in feet
-}
-
-/**
- * Sunrise or sunset event during flight
- */
-export interface SunEvent {
-  type: 'sunrise' | 'sunset';
-  timestamp: Date;
-  lat: number;
-  lon: number;
-  pointIndex: number;
-  description: string;
-}
-
-/**
- * Complete flight timeline with all calculated data
- */
-export interface FlightTimeline {
-  points: TimelinePoint[];
-  totalDistance: number;      // km
-  totalDuration: number;      // minutes
-  sunEvents: SunEvent[];
-  statistics: TimelineStatistics;
-}
-
-/**
- * Statistical summary of sun exposure during flight
- */
-export interface TimelineStatistics {
-  daylightMinutes: number;
-  darknessMinutes: number;
-  daylightPercentage: number;
-  averageSunAltitude: number;
-  maxSunAltitude: number;
-  minSunAltitude: number;
-}
-
+import { Airport, FlightTimeline, TimelinePoint, SunEvent, TimelineStatistics } from '@/types';
 import { generateWaypoints } from './geodesic';
 import { calculateSunPosition } from './solar';
 import { SUNRISE_SUNSET_ALTITUDE } from './daylight';
@@ -126,7 +65,7 @@ export function generateFlightTimeline(
       isDaylight: sunPos.altitude > SUNRISE_SUNSET_ALTITUDE,
       heading: wp.bearing,
       speed: cruisingSpeed,
-      altitude: cruisingAltitude
+      altitude: cruisingAltitude || undefined
     };
   });
 

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Globe from 'globe.gl';
 import * as THREE from 'three';
-import { FlightTimeline, TimelinePoint } from '@/utils/timeline';
+import { FlightTimeline, TimelinePoint } from '@/types';
 
 interface Globe3DProps {
   timeline: FlightTimeline | null;
@@ -82,9 +82,7 @@ function setupControls(globe: any) {
 
 export function Globe3D({ 
   timeline, 
-  currentPointIndex, 
-  onPointHover, 
-  onPointClick 
+  currentPointIndex
 }: Globe3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<any>(null);
@@ -103,7 +101,8 @@ export function Globe3D({
       const height = containerRef.current.clientHeight;
       
       // Create globe with explicit dimensions
-      const globe = Globe()(containerRef.current)
+      const GlobeConstructor: any = Globe;
+      const globe = new GlobeConstructor(containerRef.current)
         .width(width)
         .height(height);
       
@@ -240,8 +239,8 @@ export function Globe3D({
             <div style="background: rgba(0,0,0,0.9); padding: 12px; border-radius: 8px; border: 2px solid #00d2ff; min-width: 250px;">
               <div style="color: #00d2ff; font-weight: bold; font-size: 14px; margin-bottom: 8px;">🛫 ORIGIN</div>
               <div style="color: white; font-size: 12px; line-height: 1.6;">
-                <div><strong>Airport:</strong> ${timeline.origin.name || 'Unknown'}</div>
-                <div><strong>IATA:</strong> ${timeline.origin.iata || 'N/A'}</div>
+                <div><strong>Airport:</strong> ${timeline?.origin?.name || 'Unknown'}</div>
+                <div><strong>IATA:</strong> ${timeline?.origin?.iata || 'N/A'}</div>
                 <div><strong>Location:</strong> ${originPoint.lat.toFixed(4)}°, ${originPoint.lon.toFixed(4)}°</div>
                 <div><strong>Departure:</strong> ${formatTime(originPoint.timestamp)}</div>
               </div>
@@ -257,8 +256,8 @@ export function Globe3D({
             <div style="background: rgba(0,0,0,0.9); padding: 12px; border-radius: 8px; border: 2px solid #ff3333; min-width: 250px;">
               <div style="color: #ff3333; font-weight: bold; font-size: 14px; margin-bottom: 8px;">🛬 DESTINATION</div>
               <div style="color: white; font-size: 12px; line-height: 1.6;">
-                <div><strong>Airport:</strong> ${timeline.destination.name || 'Unknown'}</div>
-                <div><strong>IATA:</strong> ${timeline.destination.iata || 'N/A'}</div>
+                <div><strong>Airport:</strong> ${timeline?.destination?.name || 'Unknown'}</div>
+                <div><strong>IATA:</strong> ${timeline?.destination?.iata || 'N/A'}</div>
                 <div><strong>Location:</strong> ${destPoint.lat.toFixed(4)}°, ${destPoint.lon.toFixed(4)}°</div>
                 <div><strong>Arrival:</strong> ${formatTime(destPoint.timestamp)}</div>
               </div>

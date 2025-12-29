@@ -245,12 +245,6 @@ function StatCard({ label, value, icon }: { label: string; value: string; icon: 
   );
 }
 
-function getCompassDirection(heading: number): string {
-  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-  const index = Math.round(heading / 45) % 8;
-  return directions[index];
-}
-
 function formatDuration(minutes: number): string {
   const hours = Math.floor(minutes / 60);
   const mins = Math.floor(minutes % 60);

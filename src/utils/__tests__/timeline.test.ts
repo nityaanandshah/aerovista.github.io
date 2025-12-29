@@ -10,7 +10,8 @@ describe('Flight Timeline Generation', () => {
     city: 'Los Angeles',
     country: 'United States',
     lat: 33.9416,
-    lon: -118.4085
+    lon: -118.4085,
+    timezone: 'America/Los_Angeles'
   };
 
   const JFK: Airport = {
@@ -19,7 +20,8 @@ describe('Flight Timeline Generation', () => {
     city: 'New York',
     country: 'United States',
     lat: 40.6413,
-    lon: -73.7781
+    lon: -73.7781,
+    timezone: 'America/New_York'
   };
 
   const LHR: Airport = {
@@ -28,7 +30,8 @@ describe('Flight Timeline Generation', () => {
     city: 'London',
     country: 'United Kingdom',
     lat: 51.4700,
-    lon: -0.4543
+    lon: -0.4543,
+    timezone: 'Europe/London'
   };
 
   const NRT: Airport = {
@@ -37,7 +40,8 @@ describe('Flight Timeline Generation', () => {
     city: 'Tokyo',
     country: 'Japan',
     lat: 35.7647,
-    lon: 140.3864
+    lon: 140.3864,
+    timezone: 'Asia/Tokyo'
   };
 
   describe('Basic Timeline Generation', () => {
@@ -276,7 +280,8 @@ describe('Flight Timeline Generation', () => {
         city: 'San Francisco',
         country: 'United States',
         lat: 37.6213,
-        lon: -122.3790
+        lon: -122.3790,
+        timezone: 'America/Los_Angeles'
       };
       
       const departureTime = new Date('2024-06-21T12:00:00Z');
@@ -294,7 +299,8 @@ describe('Flight Timeline Generation', () => {
         city: 'San Francisco',
         country: 'United States',
         lat: 37.6213,
-        lon: -122.3790
+        lon: -122.3790,
+        timezone: 'America/Los_Angeles'
       };
       
       const departureTime = new Date('2024-06-21T12:00:00Z');
