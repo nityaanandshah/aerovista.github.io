@@ -69,6 +69,8 @@ export function FlightInput({ onSubmit }: FlightInputProps) {
   const [timezone, setTimezone] = useState<string>('UTC');
   const [originSearch, setOriginSearch] = useState('');
   const [destinationSearch, setDestinationSearch] = useState('');
+  const [timezoneSearch, setTimezoneSearch] = useState('UTC +0:00');
+  const [showTimezoneDropdown, setShowTimezoneDropdown] = useState(false);
   const [error, setError] = useState('');
 
   const airports = airportsData.airports as Airport[];
@@ -99,6 +101,16 @@ export function FlightInput({ onSubmit }: FlightInputProps) {
       )
       .slice(0, 10); // Show more results with larger database
   }, [destinationSearch, airports]);
+
+  // Filter timezones based on search
+  const filteredTimezones = useMemo(() => {
+    if (!timezoneSearch) return TIMEZONES.slice(0, 8); // Show first 8 by default
+    const search = timezoneSearch.toLowerCase();
+    return TIMEZONES.filter(tz =>
+      tz.label.toLowerCase().includes(search) ||
+      tz.value.toLowerCase().includes(search)
+    ).slice(0, 8); // Limit to 8 results
+  }, [timezoneSearch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,6 +223,12 @@ export function FlightInput({ onSubmit }: FlightInputProps) {
   const selectDestination = (airport: Airport) => {
     setDestination(airport);
     setDestinationSearch(`${airport.iata} - ${airport.city}`);
+  };
+
+  const selectTimezone = (tz: typeof TIMEZONES[0]) => {
+    setTimezone(tz.value);
+    setTimezoneSearch(tz.label);
+    setShowTimezoneDropdown(false);
   };
 
   return (
@@ -400,24 +418,40 @@ export function FlightInput({ onSubmit }: FlightInputProps) {
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Timezone
               </label>
-              <select
-                value={timezone}
-                onChange={(e) => setTimezone(e.target.value)}
-                className="w-full pl-4 pr-10 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none [color-scheme:dark]"
-                style={{ 
-                  colorScheme: 'dark',
-                  backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239CA3AF' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                  backgroundPosition: 'right 0.5rem center',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundSize: '1.5em 1.5em'
-                }}
-              >
-                {TIMEZONES.map((tz) => (
-                  <option key={tz.value} value={tz.value}>
-                    {tz.label}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={timezoneSearch}
+                  onChange={(e) => {
+                    setTimezoneSearch(e.target.value);
+                    setShowTimezoneDropdown(true);
+                  }}
+                  onFocus={() => setShowTimezoneDropdown(true)}
+                  onBlur={() => {
+                    // Delay to allow click on dropdown
+                    setTimeout(() => setShowTimezoneDropdown(false), 200);
+                  }}
+                  placeholder="Search timezone"
+                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                {showTimezoneDropdown && filteredTimezones.length > 0 && (
+                  <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-xl max-h-60 overflow-auto">
+                    {filteredTimezones.map((tz) => (
+                      <button
+                        key={tz.value}
+                        type="button"
+                        onClick={() => selectTimezone(tz)}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-700 focus:bg-gray-700 focus:outline-none transition-colors"
+                      >
+                        <div className="text-sm text-white">{tz.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="mt-1 text-xs text-gray-400">
+                Selected: {TIMEZONES.find(tz => tz.value === timezone)?.label || 'UTC'}
+              </div>
             </div>
           </div>
         </div>

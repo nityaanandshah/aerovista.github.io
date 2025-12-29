@@ -12,7 +12,7 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(true);
   const [selectedTimezone, setSelectedTimezone] = useState<string>('UTC');
 
   const handleFlightSubmit = (data: FlightData) => {
